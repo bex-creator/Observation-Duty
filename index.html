@@ -296,7 +296,7 @@
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 
                 // Fetch Custom Chime Audio
-                fetch('https://cdn.discordapp.com/attachments/1446257789814182071/1515777555595133060/Recording_2026-06-14_135819.mp4?ex=6a303d5b&is=6a2eebdb&hm=446898f7fae9e8a0565fbd4b6ca2d67d7621dce98f0a28885dad90fe9f58027e&')
+                fetch('https://files.catbox.moe/h6td8l.mp4')
                     .then(res => res.arrayBuffer())
                     .then(data => audioCtx.decodeAudioData(data))
                     .then(buffer => { clockChimeBuffer = buffer; })
