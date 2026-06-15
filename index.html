@@ -174,7 +174,7 @@
             <button id="play-btn" class="bg-red-700/80 hover:bg-red-600 border-2 border-red-500 text-white px-8 py-4 font-bold text-2xl uppercase hover:scale-105 transition-all tracking-[0.2em] shadow-[0_0_20px_rgba(255,0,0,0.4)] text-left hover:pl-10">
                 START SHIFT
             </button>
-            <button id="freemode-btn" class="bg-purple-700/80 hover:bg-purple-600 border-2 border-purple-500 text-white px-8 py-3 font-bold text-xl uppercase hover:scale-105 transition-all tracking-[0.2em] shadow-[0_0_15px_rgba(128,0,128,0.4)] text-left hover:pl-10">
+            <button id="freemode-btn" class="hidden bg-purple-700/80 hover:bg-purple-600 border-2 border-purple-500 text-white px-8 py-3 font-bold text-xl uppercase hover:scale-105 transition-all tracking-[0.2em] shadow-[0_0_15px_rgba(128,0,128,0.4)] text-left hover:pl-10">
                 FREE MODE
             </button>
             <div class="flex flex-col gap-3 mt-2">
@@ -994,9 +994,16 @@
 
         // --- LOCAL STORAGE SAVE SETUP ---
         const saveKey = 'observationDutySave';
+        let freemodeUnlocked = false;
         
         // Load save on init
         try {
+            const unlocked = localStorage.getItem('observationDutyFreemodeUnlocked');
+            if (unlocked === 'true') {
+                freemodeUnlocked = true;
+                document.getElementById('freemode-btn').classList.remove('hidden');
+            }
+
             const savedData = localStorage.getItem(saveKey);
             if (savedData) {
                 savedNight = parseInt(savedData, 10) || 1;
@@ -2696,6 +2703,13 @@
                         document.getElementById('game-canvas').classList.remove('jumpscare-active');
                         worldObjects.jumpscareFace.visible = false;
                         jumpscareAnimationActive = false;
+                        
+                        // Unlock Free Mode permanently
+                        try {
+                            localStorage.setItem('observationDutyFreemodeUnlocked', 'true');
+                            freemodeUnlocked = true;
+                            document.getElementById('freemode-btn').classList.remove('hidden');
+                        } catch (e) { console.warn("Failed to unlock free mode", e); }
                         
                         // Transition directly to Epilogue instead of Victory Screen
                         saveProgress(1); // Reset save since they beat the physical game
