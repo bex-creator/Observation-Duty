@@ -2721,6 +2721,11 @@
                     document.getElementById('victory-screen').classList.remove('hidden');
                     document.getElementById('victory-title').innerText = "6:00 AM";
                     document.getElementById('victory-subtext').innerText = "Shift Completed Successfully. You survived.";
+                    
+                    // FIX: Save progress immediately upon hitting 6:00 AM
+                    if (currentNight < 6) {
+                        saveProgress(currentNight + 1);
+                    }
                 }
             } else {
                 jumpscareAnimationActive = true;
@@ -3175,7 +3180,6 @@
         document.getElementById('next-night-btn').addEventListener('click', () => {
             if (currentNight < 6) { 
                 currentNight++; 
-                saveProgress(currentNight);
                 startNightSequence(currentNight); 
             } else if (currentNight === 6) { 
                 saveProgress(1); // Reset save to 1 when you beat the entire game
